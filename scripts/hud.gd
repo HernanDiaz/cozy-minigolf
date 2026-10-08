@@ -79,6 +79,8 @@ func _ready() -> void:
 	root.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(root)
 	root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_fit_safe_area()
+	get_viewport().size_changed.connect(_fit_safe_area)
 	game_ui = Control.new()
 	game_ui.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	root.add_child(game_ui)
@@ -745,6 +747,35 @@ func hide_pause() -> void:
 	if pause_panel:
 		pause_panel.queue_free()
 		pause_panel = null
+
+
+# --- Área segura (notch) ------------------------------------------------------------
+
+## Encoge la interfaz para que nada quede bajo el notch, la cámara perforada o
+## las esquinas redondeadas (en iPhone en horizontal, la barra de fuerza quedaba
+## tapada). Se recalcula al girar el móvil.
+func _fit_safe_area() -> void:
+	var m := _safe_margins()
+	root.offset_left = m.position.x
+	root.offset_top = m.position.y
+	root.offset_right = -m.size.x
+	root.offset_bottom = -m.size.y
+
+
+## Márgenes seguros en unidades de la interfaz: position = izquierda/arriba,
+## size = derecha/abajo. En escritorio no se aplica (el área segura es la del
+## monitor, no la de la ventana).
+func _safe_margins() -> Rect2:
+	if not OS.has_feature("mobile"):
+		return Rect2()
+	var window := Vector2(DisplayServer.window_get_size())
+	var safe := Rect2(DisplayServer.get_display_safe_area())
+	if window.x <= 0.0 or safe.size.x <= 0.0:
+		return Rect2()
+	var scale := get_viewport().get_visible_rect().size / window
+	var left_top := safe.position * scale
+	var right_bottom := (window - safe.end) * scale
+	return Rect2(left_top.max(Vector2.ZERO), right_bottom.max(Vector2.ZERO))
 
 
 # --- Utilidades ---------------------------------------------------------------------

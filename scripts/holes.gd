@@ -16,7 +16,7 @@ extends RefCounted
 
 const WORLDS := [
 	{"name": "WORLD_1", "stars_needed": 0},
-	{"name": "WORLD_2", "stars_needed": 12},
+	{"name": "WORLD_2", "stars_needed": 8},
 	{"name": "WORLD_3", "stars_needed": 24},
 	{"name": "WORLD_4", "stars_needed": 40},
 ]

@@ -45,7 +45,7 @@ El botón **II** (arriba a la derecha) pausa la partida: **Continuar** o **Volve
   - Prueba automática en red: `--autotest --net-host` en una copia y `--autotest --net-join=127.0.0.1` en otra.
 
 Cada hoyo da hasta 3 estrellas: embocar al par o mejor, recoger las 3 semillas doradas y hacer birdie o mejor.
-Con 12 estrellas se desbloquea el segundo mundo, con 24 el tercero y con 40 el cuarto.
+Con 8 estrellas se desbloquea el segundo mundo, con 24 el tercero y con 40 el cuarto.
 
 ## Golpes especiales
 
@@ -61,7 +61,7 @@ Al desbloquear un golpe o un mundo sale un aviso explicándolo. Kaze no los usa.
 ## Mundos
 
 1. **Colinas de la Brisa**: pradera de verano, molino, arroyo, setas saltarinas, terrazas y puente.
-2. **Bosque de los Espíritus** (se desbloquea con 12 estrellas): bosque al atardecer con luciérnagas
+2. **Bosque de los Espíritus** (se desbloquea con 8 estrellas): bosque al atardecer con luciérnagas
    y setas que brillan. Novedades: tronco hueco, espíritus del bosque que flotan de lado a lado y
    rebotan la bola, portales mágicos, escalera de raíces con troncos caídos y un árbol gigante.
    Tiene su propia música.
