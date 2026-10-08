@@ -1,0 +1,20 @@
+# Caché y archivos generados por Godot
+.godot/
+/android/
+
+# Compilaciones (APK de Android y firmas)
+build/
+*.apk
+*.aab
+*.idsig
+
+# Credenciales de exportación (claves de firma)
+export_credentials.cfg
+*.keystore
+*.jks
+
+# Vídeos (grabaciones y vistas previas de la App Store): no se suben al repositorio
+*.mp4
+*.MP4
+*.mov
+*.MOV

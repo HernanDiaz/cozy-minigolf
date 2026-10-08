@@ -1,0 +1,159 @@
+# Compila el juego para iOS en un Mac de GitHub y lo sube a TestFlight.
+# Se lanza a mano: GitHub → Actions → "iOS (TestFlight)" → Run workflow.
+#
+# Secretos necesarios (Settings → Secrets and variables → Actions), ver README, sección iOS:
+#   APPLE_TEAM_ID   ID de equipo de Apple Developer (10 caracteres)
+#   ASC_KEY_ID      ID de la clave de API de App Store Connect
+#   ASC_ISSUER_ID   ID del emisor (Issuer ID) de App Store Connect
+#   ASC_KEY_P8      Contenido completo del archivo AuthKey_XXXX.p8
+#
+# La firma es automática: Xcode crea el certificado de distribución y el perfil con la
+# clave de API, así que no hace falta un Mac propio ni tener iPhones registrados.
+# Se compila sin firmar y se firma al exportar para App Store Connect.
+
+name: iOS (TestFlight)
+
+on:
+  workflow_dispatch:
+
+env:
+  GODOT_VERSION: "4.7.2"
+  APP_NAME: CozyMinigolf
+
+jobs:
+  testflight:
+    runs-on: macos-15
+    timeout-minutes: 60
+    env:
+      APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Comprobar secretos
+        run: |
+          missing=0
+          for name in APPLE_TEAM_ID ASC_KEY_ID ASC_ISSUER_ID ASC_KEY_P8; do
+            if [ -z "${!name}" ]; then
+              echo "::error::Falta el secreto $name (ver README, sección iOS)"
+              missing=1
+            fi
+          done
+          exit $missing
+
+      # Godot 4.7 se compila con el SDK de iOS 26 (y Apple exige ese SDK para subir a la App Store),
+      # así que hace falta Xcode 26 o posterior. Se elige el más nuevo que tenga la máquina.
+      - name: Elegir Xcode
+        run: |
+          echo "Versiones de Xcode instaladas:"; ls -d /Applications/Xcode*.app
+          xcode=$(ls -d /Applications/Xcode_2[6-9]*.app 2>/dev/null | sort -V | tail -1)
+          if [ -z "$xcode" ]; then
+            echo "::error::Esta máquina no tiene Xcode 26 o posterior (ver la lista de arriba)"
+            exit 1
+          fi
+          sudo xcode-select -s "$xcode/Contents/Developer"
+          xcodebuild -version
+
+      # Godot y sus plantillas (1,2 GB) se guardan en caché para no descargarlos en cada compilación.
+      - name: Caché de Godot
+        id: godot-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: ~/godot
+          key: godot-${{ env.GODOT_VERSION }}-ios
+
+      - name: Descargar Godot y las plantillas de iOS
+        if: steps.godot-cache.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p ~/godot/templates && cd ~/godot
+          base="https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable"
+          curl -sSLf -o godot.zip "$base/Godot_v${GODOT_VERSION}-stable_macos.universal.zip"
+          unzip -q godot.zip && rm godot.zip
+          curl -sSLf -o templates.tpz "$base/Godot_v${GODOT_VERSION}-stable_export_templates.tpz"
+          unzip -q -j templates.tpz "templates/ios.zip" "templates/version.txt" -d templates
+          rm templates.tpz
+
+      # Se guarda aunque luego falle la compilación, para no volver a descargarlo en el siguiente intento.
+      - name: Guardar Godot en caché
+        if: steps.godot-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: ~/godot
+          key: godot-${{ env.GODOT_VERSION }}-ios
+
+      - name: Instalar Godot
+        run: |
+          dest="$HOME/Library/Application Support/Godot/export_templates/${GODOT_VERSION}.stable"
+          mkdir -p "$dest"
+          cp ~/godot/templates/* "$dest/"
+          echo "GODOT=$HOME/godot/Godot.app/Contents/MacOS/Godot" >> "$GITHUB_ENV"
+
+      - name: Generar el proyecto de Xcode
+        run: |
+          # El Team ID no se guarda en el repositorio: se pone aquí desde el secreto.
+          sed -i '' "s/^application\/app_store_team_id=\"\"/application\/app_store_team_id=\"${APPLE_TEAM_ID}\"/" export_presets.cfg
+          "$GODOT" --headless --path . --import || true
+          mkdir -p build/ios
+          "$GODOT" --headless --path . --export-release "iOS" "build/ios/${APP_NAME}.ipa"
+          test -d "build/ios/${APP_NAME}.xcodeproj"
+
+      - name: Número de compilación
+        # Cada subida a Apple necesita un número distinto: se usa el número de ejecución del workflow.
+        run: |
+          /usr/libexec/PlistBuddy -c "Set :CFBundleVersion ${{ github.run_number }}" \
+            "build/ios/${APP_NAME}/${APP_NAME}-Info.plist"
+
+      - name: Clave de App Store Connect
+        run: |
+          mkdir -p ~/private_keys
+          printf '%s\n' "$ASC_KEY_P8" > ~/private_keys/AuthKey_${ASC_KEY_ID}.p8
+          echo "ASC_KEY_PATH=$HOME/private_keys/AuthKey_${ASC_KEY_ID}.p8" >> "$GITHUB_ENV"
+
+      # Sin firmar: firmar aquí exigiría un perfil de desarrollo y un iPhone registrado.
+      # La firma de distribución se hace en el paso siguiente, al exportar.
+      - name: Compilar
+        run: |
+          xcodebuild archive \
+            -project "build/ios/${APP_NAME}.xcodeproj" \
+            -scheme "${APP_NAME}" \
+            -configuration Release \
+            -destination "generic/platform=iOS" \
+            -archivePath "build/ios/${APP_NAME}.xcarchive" \
+            DEVELOPMENT_TEAM="$APPLE_TEAM_ID" \
+            CODE_SIGN_STYLE=Automatic \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            PROVISIONING_PROFILE_SPECIFIER=""
+
+      - name: Firmar y subir a TestFlight
+        run: |
+          cat > ExportOptions.plist <<EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>method</key><string>app-store-connect</string>
+            <key>destination</key><string>upload</string>
+            <key>teamID</key><string>${APPLE_TEAM_ID}</string>
+            <key>signingStyle</key><string>automatic</string>
+            <key>uploadSymbols</key><true/>
+          </dict>
+          </plist>
+          EOF
+          xcodebuild -exportArchive \
+            -archivePath "build/ios/${APP_NAME}.xcarchive" \
+            -exportOptionsPlist ExportOptions.plist \
+            -exportPath build/ios/export \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$ASC_KEY_PATH" \
+            -authenticationKeyID "$ASC_KEY_ID" \
+            -authenticationKeyIssuerID "$ASC_ISSUER_ID"
+          echo "Subido. En unos minutos aparecerá en App Store Connect → TestFlight (compilación ${{ github.run_number }})."
+
+      - name: Borrar la clave
+        if: always()
+        run: rm -rf ~/private_keys

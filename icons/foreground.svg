@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="432" height="432" viewBox="0 0 432 432"><defs>
+<linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#6fbfe6"/>
+<stop offset="0.45" stop-color="#b5e2ee"/>
+<stop offset="0.68" stop-color="#fff0cc"/>
+</linearGradient>
+<radialGradient id="sun" cx="0.5" cy="0.5" r="0.5">
+<stop offset="0" stop-color="#fffbe8" stop-opacity="1"/>
+<stop offset="0.45" stop-color="#fff3c4" stop-opacity="0.9"/>
+<stop offset="1" stop-color="#fff3c4" stop-opacity="0"/>
+</radialGradient>
+<linearGradient id="green" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#a6e08a"/>
+<stop offset="1" stop-color="#74c262"/>
+</linearGradient>
+<radialGradient id="ball" cx="0.38" cy="0.35" r="0.7">
+<stop offset="0" stop-color="#ffffff"/>
+<stop offset="0.6" stop-color="#f6f1e6"/>
+<stop offset="1" stop-color="#cfc6b3"/>
+</radialGradient>
+</defs>
+<ellipse cx="216" cy="318" rx="132" ry="48" fill="#3e8440"/>
+<ellipse cx="216" cy="304" rx="132" ry="46" fill="url(#green)"/>
+<ellipse cx="200" cy="296" rx="96" ry="26" fill="#b6e79a" opacity="0.55"/>
+<ellipse cx="258" cy="306" rx="24" ry="9" fill="#23462a"/>
+<path d="M234 306 a24 9 0 0 0 48 0 a24 6 0 0 1 -48 0 Z" fill="#5b9c55"/>
+<rect x="255" y="140" width="7" height="168" rx="3.5" fill="#fffaf0"/>
+<rect x="259" y="140" width="3" height="168" rx="1.5" fill="#d9d0bd"/>
+<path d="M262 144 C282 136 300 156 334 150 C324 164 326 178 336 190 C304 196 284 176 262 186 Z" fill="#e8503a"/>
+<path d="M262 170 C284 162 302 180 332 176 L336 190 C304 196 284 176 262 186 Z" fill="#c63d2b"/>
+<circle cx="258.5" cy="138" r="7" fill="#ffd55a"/>
+<g fill="#ffffff">
+<circle cx="112" cy="262" r="4" opacity="0.35"/>
+<circle cx="128" cy="272" r="5" opacity="0.5"/>
+<circle cx="145" cy="280" r="6" opacity="0.7"/>
+</g>
+<ellipse cx="180" cy="312" rx="24" ry="7" fill="#2f6b34" opacity="0.45"/>
+<circle cx="178" cy="286" r="25" fill="url(#ball)"/>
+<path d="M156 276 C168 288 190 292 202 280 C202 286 200 290 198 294 C186 302 166 298 155 286 C154 282 155 279 156 276 Z" fill="#e0442f"/>
+<g fill="#d8cfbc">
+<circle cx="170" cy="272" r="2"/><circle cx="182" cy="270" r="2"/><circle cx="192" cy="276" r="2"/>
+<circle cx="176" cy="300" r="2"/><circle cx="188" cy="298" r="2"/>
+</g>
+<ellipse cx="168" cy="272" rx="7" ry="4.5" fill="#ffffff" transform="rotate(-30 168 272)"/>
+</svg>

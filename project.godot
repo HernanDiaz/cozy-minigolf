@@ -1,0 +1,67 @@
+; Engine configuration file.
+; Generado a mano para Godot 4.7. Ábrelo con el editor de Godot.
+
+config_version=5
+
+[application]
+
+config/name="Cozy Minigolf"
+config/name_localized={
+"en": "Cozy Minigolf",
+"es": "Minigolf Relajante",
+"pt_BR": "Minigolfe Relaxante",
+"fr": "Minigolf Détente",
+"de": "Entspanntes Minigolf",
+"it": "Minigolf Rilassante",
+"ru": "Уютный минигольф",
+"tr": "Rahat Minigolf",
+"id": "Minigolf Santai",
+"vi": "Minigolf Thư Giãn",
+"hi": "सुकून भरा मिनी गोल्फ़",
+"ar": "ميني جولف مريح",
+"ja": "のんびりミニゴルフ",
+"ko": "힐링 미니골프",
+"zh_CN": "悠闲迷你高尔夫",
+"pt": "Minigolfe Relaxante",
+"zh": "悠闲迷你高尔夫",
+"in": "Minigolf Santai"
+}
+config/quit_on_go_back=false
+run/main_scene="res://scenes/main.tscn"
+config/features=PackedStringArray("4.7", "Mobile")
+config/icon="res://icon.svg"
+
+[autoload]
+
+Sfx="*res://scripts/sfx.gd"
+Music="*res://scripts/music.gd"
+Net="*res://scripts/net.gd"
+
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+window/handheld/orientation=4
+window/energy_saving/keep_screen_on=true
+
+[input_devices]
+
+pointing/emulate_touch_from_mouse=true
+
+[physics]
+
+3d/physics_engine="Jolt Physics"
+common/physics_ticks_per_second=120
+
+[rendering]
+
+renderer/rendering_method="mobile"
+textures/vram_compression/import_etc2_astc=true
+anti_aliasing/quality/msaa_3d=2
+
+[internationalization]
+
+locale/translations=PackedStringArray("res://locale/translations.en.translation", "res://locale/translations.es.translation", "res://locale/translations.pt_BR.translation", "res://locale/translations.fr.translation", "res://locale/translations.de.translation", "res://locale/translations.it.translation", "res://locale/translations.ru.translation", "res://locale/translations.tr.translation", "res://locale/translations.id.translation", "res://locale/translations.vi.translation", "res://locale/translations.hi.translation", "res://locale/translations.ar.translation", "res://locale/translations.ja.translation", "res://locale/translations.ko.translation", "res://locale/translations.zh_CN.translation")
+locale/fallback="en"
