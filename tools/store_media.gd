@@ -16,7 +16,8 @@ const SHOTS_DIR := "res://build/screenshots"
 
 ## Tamaños de captura de App Store Connect (horizontal). `ui`: interfaz de 720 de alto.
 const DEVICES := {
-	"iphone65": {size = Vector2i(2778, 1284), ui = Vector2i(1558, 720)},
+	# iPhone con Dynamic Island (6,1" y 6,3"): el tamaño que pide ahora App Store Connect.
+	"iphone63": {size = Vector2i(2622, 1206), ui = Vector2i(1565, 720)},
 	# En 4:3 el juego amplía la interfaz a lo alto (el ancho mínimo es 1280).
 	"ipad13": {size = Vector2i(2752, 2064), ui = Vector2i(1280, 960)},
 }

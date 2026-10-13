@@ -149,9 +149,13 @@ godot --path . --resolution 640x300 --fixed-fps 30 -s res://tools/store_media.gd
 - `dry` juega los planos sin guardar nada y dice cómo acaba cada uno (para ajustar fuerza y mira).
 - `video` deja los fotogramas en `build/preview/<idioma>_<tamaño>/` y `make_preview.py` monta el
   `.mp4` (H.264, 30 fps, con pista de audio en silencio, que App Store Connect exige). Unos 27 s.
-- `shots` deja las capturas de iPhone 6,5" (2778×1284) e iPad 13" (2752×2064) en
+- `shots` deja las capturas de iPhone 6,3" (2622×1206) e iPad 13" (2752×2064) en
   `build/screenshots/<idioma>/`.
 - Los textos de cada plano están en español e inglés (`CAPTIONS`).
+
+Los textos de la ficha (nombre, subtítulo, texto promocional, palabras clave, descripción, URLs y
+copyright) están en `store/es.txt` y `store/en.txt`. La web de soporte y política de privacidad está en
+https://github.com/HernanDiaz/cozy-minigolf-web (publicada en https://hernandiaz.github.io/cozy-minigolf-web/).
 
 ## Archivos
 

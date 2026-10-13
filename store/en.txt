@@ -1,0 +1,50 @@
+NAME (30)
+Cozy Minigolf
+
+SUBTITLE (30)
+Relaxing 3D mini golf
+
+PROMOTIONAL TEXT (170)
+Putt, hop and brake across meadows, magical forests, islands in the clouds and snowy peaks. Play solo, against Kaze, or with a friend on one phone or over Wi‑Fi.
+
+KEYWORDS (100)
+golf,minigolf,putt,putting,relaxing,casual,3d,hole in one,2 players,wifi,family,ball,course,chill
+
+DESCRIPTION (4000)
+A mini golf game to enjoy at your own pace: lovingly drawn landscapes, gentle music and holes full of surprises.
+
+Swing with the classic three-tap system: start the swing, lock in the power and nail the accuracy right on the line. Easy to learn and very satisfying to master.
+
+FOUR WORLDS
+• Breezy Hills: summer meadows, windmills, streams and bouncy mushrooms.
+• Spirit Forest: a forest at sunset with fireflies, hollow logs, magic portals and floating spirits.
+• Islands in the Clouds: floating islands, bridges with no railings, cloud trampolines and gusts of wind.
+• Snowy Summit: slippery ice, soft snow, ice slides and blizzards.
+
+SPECIAL SHOTS
+Collect stars to unlock new shots:
+• Curve: the ball bends left or right around obstacles.
+• Hop: a perfectly timed bounce over fences and gaps.
+• Brake: stop the ball dead in its tracks — a must on the ice.
+
+PLAY YOUR WAY
+• Practice, at your own pace.
+• Duel against Kaze, a rival who gets craftier every hole… and won't think twice about knocking your ball away.
+• 2 players on the same phone, taking turns.
+• Wi‑Fi duel against a friend on the same network.
+
+Plus: golden seeds hidden in every hole, 3 stars per hole, holes in one with confetti and characters who dance when things go well.
+
+No ads, no in-app purchases and no internet connection needed. Available in 15 languages.
+
+SUPPORT URL
+https://hernandiaz.github.io/cozy-minigolf-web/
+
+MARKETING URL
+https://hernandiaz.github.io/cozy-minigolf-web/
+
+PRIVACY POLICY
+https://hernandiaz.github.io/cozy-minigolf-web/privacy.html
+
+COPYRIGHT
+2026 Hernán Díaz Rodríguez

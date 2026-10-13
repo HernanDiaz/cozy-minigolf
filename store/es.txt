@@ -1,0 +1,50 @@
+NOMBRE (30)
+Minigolf Relajante
+
+SUBTÍTULO (30)
+Minigolf tranquilo en 3D
+
+TEXTO PROMOCIONAL (170)
+Golpea, salta y frena entre prados, bosques mágicos, islas en las nubes y cumbres nevadas. Juega solo, contra Kaze o con un amigo en el mismo móvil o por Wi‑Fi.
+
+PALABRAS CLAVE (100)
+golf,minigolf,putt,relajante,tranquilo,casual,3d,hoyo,dos jugadores,wifi,familia,bola,hoyo en uno
+
+DESCRIPCIÓN (4000)
+Un minigolf para jugar con calma: paisajes dibujados con mimo, música suave y hoyos llenos de sorpresas.
+
+Golpea con el clásico sistema de tres toques: empieza el swing, fija la fuerza y acierta la precisión justo en la línea. Fácil de aprender y muy satisfactorio de dominar.
+
+CUATRO MUNDOS
+• Colinas de la Brisa: prados de verano, molinos, arroyos y setas saltarinas.
+• Bosque de los Espíritus: un bosque al atardecer con luciérnagas, troncos huecos, portales mágicos y espíritus que flotan.
+• Islas entre las Nubes: islas flotantes, puentes sin barandilla, trampolines de nube y rachas de viento.
+• Cumbre Nevada: hielo que apenas frena, nieve blanda, toboganes y ventiscas.
+
+GOLPES ESPECIALES
+Reúne estrellas y desbloquea golpes nuevos:
+• Curva: la bola gira a izquierda o derecha para rodear obstáculos.
+• Salto: un bote en el momento justo para pasar por encima de vallas y huecos.
+• Freno: la bola se para en seco, imprescindible en el hielo.
+
+JUEGA COMO QUIERAS
+• Práctica, a tu ritmo.
+• Duelo contra Kaze, un rival que se vuelve más pícaro a cada hoyo… y que no duda en golpear tu bola.
+• 2 jugadores en el mismo móvil, por turnos.
+• Duelo por Wi‑Fi contra un amigo conectado a la misma red.
+
+Y además: semillas doradas escondidas en cada hoyo, 3 estrellas por hoyo, hoyos en uno con confeti y personajes que bailan cuando las cosas salen bien.
+
+Sin anuncios, sin compras dentro de la app y sin necesidad de conexión. Disponible en 15 idiomas.
+
+URL DE SOPORTE
+https://hernandiaz.github.io/cozy-minigolf-web/
+
+URL DE MARKETING
+https://hernandiaz.github.io/cozy-minigolf-web/
+
+POLÍTICA DE PRIVACIDAD
+https://hernandiaz.github.io/cozy-minigolf-web/privacy.html
+
+COPYRIGHT
+2026 Hernán Díaz Rodríguez
