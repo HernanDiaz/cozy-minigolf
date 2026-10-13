@@ -35,6 +35,8 @@ const PURPLE := Color(0.55, 0.38, 0.72)
 const GRAY := Color(0.4, 0.36, 0.42)
 
 var aim_hold := 0.0
+## Vídeo y capturas de la tienda: sin botones de saltar turno ni de pausa.
+var showcase := false
 ## Texto del botón grande mientras rueda la bola con un salto o un freno
 ## preparados (vacío si no hay ninguno).
 var roll_action := ""
@@ -236,7 +238,8 @@ func set_phase(phase: String) -> void:
 	meter.visible = swinging or phase == "cpu"
 	dist_label.visible = swinging
 	shot_label.visible = swinging
-	skip_btn.visible = phase == "cpu"
+	skip_btn.visible = phase == "cpu" and not showcase
+	pause_btn.visible = not showcase
 	if phase == "watch":
 		meter.visible = true
 	match phase:

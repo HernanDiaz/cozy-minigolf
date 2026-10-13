@@ -113,6 +113,11 @@ var _net_tick := 0
 var _aim_tick := 0.0
 var net_host_auto := false
 var net_join_ip := ""
+## Modo escaparate (vídeo y capturas de la tienda, tools/store_media.gd): el
+## jugador tira solo siguiendo un plan exacto {aim, power, special, trigger}.
+var showcase := false
+var showcase_plan := {}
+var _showcase_acc := 0.0
 
 
 func _ready() -> void:
@@ -185,6 +190,9 @@ func _ready() -> void:
 	Net.event_received.connect(_on_net_event)
 	Net.sync_received.connect(_on_net_sync)
 	hud.process_mode = Node.PROCESS_MODE_ALWAYS
+	if showcase:
+		hud.showcase = true
+		return
 	if autotest:
 		Engine.time_scale = 3.0
 		# Por si algo se atasca, la prueba nunca dura más de 20 minutos de juego.
@@ -320,7 +328,7 @@ func _on_play(p_duel: bool, p_world: int = 0, p_hotseat: bool = false) -> void:
 	hud.hide_scorecard()
 	for p in players:
 		p["scores"] = []
-	hole_index = start_hole if autotest else 0
+	hole_index = start_hole if autotest or showcase else 0
 	_update_total()
 	_load_hole(hole_index)
 
@@ -514,6 +522,7 @@ func _press() -> void:
 				return
 			power = maxf(meter, 0.02)
 			_prev_meter = meter
+			_showcase_acc = 0.0
 			swing_start_ms = Time.get_ticks_msec()
 			state = State.ACCURACY
 			hud.set_phase("cpu" if _player()["cpu"] else "accuracy")
@@ -598,6 +607,12 @@ func _strike() -> void:
 		special_armed = special
 		hud.roll_action = tr("BTN_HOP") if special == "hop" else tr("BTN_BRAKE")
 	special = ""
+	if showcase and special_armed != "":
+		var my_flow := flow
+		get_tree().create_timer(float(showcase_plan.get("trigger", 0.5)), false).timeout.connect(
+			func() -> void:
+				if my_flow == flow and state == State.ROLLING:
+					_trigger_special())
 	state = State.ROLLING
 	spin_left = 1
 	drag_accum = 0.0
@@ -1398,6 +1413,9 @@ func _cpu_think() -> void:
 	if my != flow or state != State.AIM:
 		return
 	await get_tree().physics_frame
+	if not showcase_plan.is_empty():
+		_showcase_aim()
+		return
 	var skill := _kaze_skill()
 	var b: Vector3 = ball.global_position
 	var target_yaw := 0.0
@@ -1427,6 +1445,24 @@ func _cpu_think() -> void:
 	# Gira la mira poco a poco hasta el objetivo.
 	var tw := create_tween()
 	tw.tween_property(self, "aim_yaw", target_yaw, 0.5)
+	await tw.finished
+	if my != flow or state != State.AIM:
+		return
+	_press()
+
+
+## Modo escaparate: gira la mira hacia el punto del plan y tira con su fuerza
+## exacta (y precisión perfecta), con el golpe especial que diga el plan.
+func _showcase_aim() -> void:
+	var my := flow
+	var plan := showcase_plan
+	var aim: Vector2 = plan["aim"]
+	cpu_power = float(plan["power"])
+	cpu_acc = 0.0
+	special = str(plan.get("special", ""))
+	_update_aim()
+	var tw := create_tween()
+	tw.tween_property(self, "aim_yaw", _yaw_to(Vector3(aim.x, 0, aim.y)), 0.5)
 	await tw.finished
 	if my != flow or state != State.AIM:
 		return
@@ -1638,7 +1674,7 @@ func _trigger_special() -> void:
 		_use_special(special_armed)
 		special_armed = ""
 		hud.roll_action = ""
-		hud.set_phase("rolling")
+		hud.set_phase("cpu" if _player()["cpu"] else "rolling")
 
 
 ## Prueba automática de los golpes especiales: en cada tiro elige uno al azar.
@@ -1740,7 +1776,15 @@ func _process(delta: float) -> void:
 				meter = 0.0
 				meter_dir = 1.0
 			hud.set_meter(meter, power_guide, power, ACC_ZONE, ACC_PERFECT)
-	if not p.is_empty() and p["cpu"] and state in [State.POWER, State.ACCURACY]:
+			# Escaparate: el tercer toque llega enseguida y perfecto (contado en
+			# fotogramas, para que la prueba y la grabación salgan idénticas).
+			if showcase and not showcase_plan.is_empty():
+				_showcase_acc += delta
+				if _showcase_acc > 0.35:
+					meter = power
+					_press()
+	if not p.is_empty() and p["cpu"] and (state == State.POWER
+			or state == State.ACCURACY and not (showcase and not showcase_plan.is_empty())):
 		_cpu_update()
 	if online:
 		_online_process(delta)

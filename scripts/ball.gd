@@ -135,6 +135,7 @@ func set_colors(body: Color, stripe: Color) -> void:
 func wake(v: Vector3) -> void:
 	freeze = false
 	moving = true
+	airtime = 0.0
 	_still = 0.0
 	_move_time = 0.0
 	_spin_time = 0.0
@@ -153,6 +154,9 @@ func set_velocity(v: Vector3) -> void:
 
 func shoot(vel: Vector3) -> void:
 	freeze = false
+	# Quieta y congelada no toca el suelo y el tiempo "en el aire" seguía
+	# contando: sin esto, cada golpe gritaba "¡VUELA!".
+	airtime = 0.0
 	_pending_vel = vel
 	_has_pending = true
 	moving = true

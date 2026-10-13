@@ -133,6 +133,26 @@ Notas:
   `godot --headless --path . -s res://tools/render_icons.gd` junto con los de Android.
 - **Ajustes de iOS:** preset "iOS" de `export_presets.cfg`. El Team ID no se guarda en el repositorio: lo pone el workflow.
 
+## Vídeo y capturas para las tiendas
+
+`tools/store_media.gd` juega solo unos planos preparados (modo escaparate de `main.gd`: tiro con
+fuerza y punto de mira exactos, y golpe especial si lo hay) y los graba con el render real del juego.
+Con `--fixed-fps 30` todo sale idéntico en cada pasada.
+
+```
+godot --path . --resolution 640x300 --fixed-fps 30 -s res://tools/store_media.gd -- dry
+godot --path . --resolution 640x300 --fixed-fps 30 -s res://tools/store_media.gd -- video es 1920x886
+python tools/make_preview.py build/preview/es_1920x886
+godot --path . --resolution 640x300 --fixed-fps 30 -s res://tools/store_media.gd -- shots es
+```
+
+- `dry` juega los planos sin guardar nada y dice cómo acaba cada uno (para ajustar fuerza y mira).
+- `video` deja los fotogramas en `build/preview/<idioma>_<tamaño>/` y `make_preview.py` monta el
+  `.mp4` (H.264, 30 fps, con pista de audio en silencio, que App Store Connect exige). Unos 27 s.
+- `shots` deja las capturas de iPhone 6,5" (2778×1284) e iPad 13" (2752×2064) en
+  `build/screenshots/<idioma>/`.
+- Los textos de cada plano están en español e inglés (`CAPTIONS`).
+
 ## Archivos
 
 | Archivo | Qué hace |
